@@ -1,7 +1,8 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_flutter/Login/view_models/login_google_view_model.dart';
 import 'package:learning_flutter/Login/view_models/sign_view_model.dart';
+import 'package:learning_flutter/Login/widgets/login_text.dart';
+import 'package:learning_flutter/utils/app_sizes%20copy.dart';
 import 'package:learning_flutter/widgets/custom_button.dart';
 import 'package:learning_flutter/widgets/custom_input_text.dart';
 import 'package:learning_flutter/widgets/loading.dart';
@@ -17,6 +18,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool isSignUp = true;
 
   @override
   Widget build(BuildContext context) {
@@ -53,34 +55,69 @@ class _SignupPageState extends State<SignupPage> {
                 validator: (String value) {
                   if (value.length < 1) {
                     return 'Password tidak boleh kosong';
-                  } else if (value.length < 3) {
-                    return 'Password minimal 3 karakter';
+                  } else if (value.length < 6) {
+                    return 'Password minimal 6 karakter';
                   }
                 },
               ),
               SizedBox(height: 15),
               CustomButton(
-                label: 'Sign Up',
+                label: isSignUp == true ? 'Sign Up' : 'Sign In',
                 onPressed: () async {
                   if (formKey.currentState.validate()) {
                     showLoading(context);
-                    await sign.signUp(email.text, password.text).then(
-                      (value) {
-                        PopupStatus.showFlushbar(
-                          context,
-                          value.status,
-                          value.message,
-                        );
-                        if (value.status == true) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/', (Route<dynamic> route) => false);
-                        }
-                      },
-                    );
-                    hideLoading(context);
+                    isSignUp == true
+                        ? await sign.signUp(email.text, password.text).then(
+                            (value) {
+                              hideLoading(context);
+                              PopupStatus.showFlushbar(
+                                context,
+                                value.status,
+                                value.message,
+                              );
+                              if (value.status == true) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    'home', (Route<dynamic> route) => false);
+                              }
+                            },
+                          )
+                        : await sign.signIn(email.text, password.text).then(
+                            (value) {
+                              hideLoading(context);
+                              PopupStatus.showFlushbar(
+                                context,
+                                value.status,
+                                value.message,
+                              );
+                              if (value.status == true) {
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    'home', (Route<dynamic> route) => false);
+                              }
+                            },
+                          );
                   }
                 },
               ),
+              SizedBox(height: Sizes.s15),
+              isSignUp == false
+                  ? LoginText(
+                      label: 'Belum punya akun? ',
+                      methodText: 'Buat akun',
+                      onTap: () {
+                        setState(() {
+                          isSignUp = true;
+                        });
+                      },
+                    )
+                  : LoginText(
+                      label: 'Sudah punya akun? ',
+                      methodText: 'Masuk akun',
+                      onTap: () {
+                        setState(() {
+                          isSignUp = false;
+                        });
+                      },
+                    ),
             ],
           ),
         ),

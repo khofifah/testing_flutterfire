@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/utils/app_sizes.dart';
 
+// ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
   String label;
   Function onPressed;

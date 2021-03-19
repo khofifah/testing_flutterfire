@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/Home/pages/main_page.dart';
 import 'package:learning_flutter/Login/pages/login_page.dart';
 import 'package:learning_flutter/Login/pages/signup_page.dart';
+import 'package:learning_flutter/utils/splash_screen.dart';
 
 class AppRoute {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -20,11 +21,18 @@ class AppRoute {
         );
         break;
 
+      case 'home':
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (BuildContext context) => HomePage(),
+        );
+        break;
+
       case '/':
       default:
         return MaterialPageRoute(
           settings: settings,
-          builder: (BuildContext context) => HomePage(),
+          builder: (BuildContext context) => SplashScreen(),
         );
         break;
     }

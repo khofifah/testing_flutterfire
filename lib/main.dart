@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_flutter/Login/view_models/login_google_view_model.dart';
 import 'package:learning_flutter/Login/view_models/sign_view_model.dart';
 import 'package:learning_flutter/utils/app_route.dart';
+import 'package:learning_flutter/utils/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -21,7 +22,7 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget with SharedPreferencesHandler {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: AppRoute.generateRoute,
-      initialRoute: 'signUp',
+      initialRoute: '/',
     );
   }
 }
