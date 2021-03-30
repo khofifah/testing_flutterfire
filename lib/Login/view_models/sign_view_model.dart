@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:learning_flutter/Login/models/login.dart';
 import 'package:learning_flutter/Login/models/sign_status.dart';
 import 'package:learning_flutter/utils/shared_preferences.dart';
 
 class SignViewModel extends ChangeNotifier with SharedPreferencesHandler {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final sp = SharedPreferencesHandler();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  // final sp = SharedPreferencesHandler();
 
   Future<SignStatus> signUp(String email, String password) async {
     var result;
@@ -23,7 +25,7 @@ class SignViewModel extends ChangeNotifier with SharedPreferencesHandler {
         email: user.email.toString(),
         nama: user.displayName.toString(),
       );
-      await sp.setLoginData(
+      await setLoginData(
         json.encode(login.toMap(login)),
       );
       result = SignStatus(
@@ -54,6 +56,7 @@ class SignViewModel extends ChangeNotifier with SharedPreferencesHandler {
   Future<bool> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
+      await googleSignIn.signOut();
       setLoginData(null);
       return true;
     } catch (e) {
@@ -74,7 +77,7 @@ class SignViewModel extends ChangeNotifier with SharedPreferencesHandler {
         email: user.email.toString(),
         nama: user.displayName.toString(),
       );
-      await sp.setLoginData(
+      await setLoginData(
         json.encode(login.toMap(login)),
       );
       result = SignStatus(

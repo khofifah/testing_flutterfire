@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:learning_flutter/Login/models/login.dart';
+import 'package:learning_flutter/Login/view_models/login_google_view_model.dart';
 import 'package:learning_flutter/Login/view_models/sign_view_model.dart';
 import 'package:learning_flutter/utils/app_sizes%20copy.dart';
 import 'package:learning_flutter/utils/shared_preferences.dart';
@@ -36,6 +37,7 @@ class _HomePageState extends State<HomePage> with SharedPreferencesHandler {
   @override
   Widget build(BuildContext context) {
     final sign = Provider.of<SignViewModel>(context);
+    final google = Provider.of<SignGoogleViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,8 +67,18 @@ class _HomePageState extends State<HomePage> with SharedPreferencesHandler {
                     onPressed: () async {
                       sign.signOut().then((value) {
                         if (value == true) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              'signUp', (Route<dynamic> route) => false);
+                          google.signOutGoogle().then((value) {
+                            if (value == true) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  'signUp', (Route<dynamic> route) => false);
+                            } else {
+                              PopupStatus.showFlushbar(
+                                context,
+                                false,
+                                'Gagal Sign Out',
+                              );
+                            }
+                          });
                         } else {
                           PopupStatus.showFlushbar(
                             context,

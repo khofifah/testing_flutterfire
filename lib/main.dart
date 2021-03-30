@@ -13,8 +13,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: <SingleChildWidget>[
-        ChangeNotifierProvider<LoginGoogleViewModel>(
-            create: (_) => LoginGoogleViewModel()),
+        ChangeNotifierProvider<SignGoogleViewModel>(
+            create: (_) => SignGoogleViewModel()),
         ChangeNotifierProvider<SignViewModel>(create: (_) => SignViewModel()),
       ],
       child: MyApp(),

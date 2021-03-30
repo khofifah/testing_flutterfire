@@ -113,6 +113,7 @@ class Sizes {
 
     ScreenUtil.init(
       context,
+      Orientation.portrait,
       designSize: Size(
         defaultScreenWidth,
         defaultScreenHeight,

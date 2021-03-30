@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> with SharedPreferencesHandler {
 
   @override
   Widget build(BuildContext context) {
-    final login = Provider.of<LoginGoogleViewModel>(context);
+    final login = Provider.of<SignGoogleViewModel>(context);
 
     return Scaffold(
       body: Container(
@@ -43,14 +43,14 @@ class _LoginPageState extends State<LoginPage> with SharedPreferencesHandler {
             ElevatedButton(
               child: Text('Login Google'),
               onPressed: () async {
-                await login.loginGoogle();
+                await login.signInGoogle();
                 getData();
               },
             ),
             ElevatedButton(
               child: Text('Logout Google'),
               onPressed: () async {
-                await login.logoutGoogle();
+                await login.signOutGoogle();
                 getData();
               },
             ),

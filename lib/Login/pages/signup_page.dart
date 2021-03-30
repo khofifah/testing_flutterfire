@@ -1,5 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:learning_flutter/Login/models/login.dart';
+import 'package:learning_flutter/Login/view_models/login_google_view_model.dart';
 import 'package:learning_flutter/Login/view_models/sign_view_model.dart';
 import 'package:learning_flutter/Login/widgets/login_text.dart';
 import 'package:learning_flutter/utils/app_sizes%20copy.dart';
@@ -23,6 +25,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     final sign = Provider.of<SignViewModel>(context);
+    final login = Provider.of<SignGoogleViewModel>(context);
 
     return Scaffold(
       body: Container(
@@ -96,6 +99,25 @@ class _SignupPageState extends State<SignupPage> {
                             },
                           );
                   }
+                },
+              ),
+              SizedBox(height: Sizes.s15),
+              CustomButton(
+                label: 'Sign In With Google',
+                onPressed: () async {
+                  await login.signInGoogle().then(
+                    (value) {
+                      PopupStatus.showFlushbar(
+                        context,
+                        value.status,
+                        value.message,
+                      );
+                      if (value.status == true) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            'home', (Route<dynamic> route) => false);
+                      }
+                    },
+                  );
                 },
               ),
               SizedBox(height: Sizes.s15),
